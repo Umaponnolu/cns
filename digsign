@@ -1,0 +1,40 @@
+import java.io.*;
+import java.security.*;
+
+public class SimpleDigitalSignature {
+    public static void main(String[] args) {
+        try {
+            // File to sign
+            String filePath = "C:\Users\umapo\OneDrive\Documents\registration-form";
+
+            // Generate key pair
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA");
+            keyGen.initialize(1024);
+            KeyPair pair = keyGen.generateKeyPair();
+
+            // Initialize signature
+            Signature sign = Signature.getInstance("SHA1withDSA");
+            sign.initSign(pair.getPrivate());
+
+            // Read file and update signature
+            FileInputStream fis = new FileInputStream(filePath);
+            byte[] data = fis.readAllBytes();
+            fis.close();
+            sign.update(data);
+
+            // Generate signature
+            byte[] digitalSig = sign.sign();
+
+            // Save signature and public key
+            try (FileOutputStream sigOut = new FileOutputStream("signature.txt");
+                 FileOutputStream keyOut = new FileOutputStream("publickey.txt")) {
+                sigOut.write(digitalSig);
+                keyOut.write(pair.getPublic().getEncoded());
+            }
+
+            System.out.println("Digital Signature Created Successfully!");
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+}
