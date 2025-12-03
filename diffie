@@ -1,0 +1,26 @@
+ 
+p = int(input("Enter a prime number (p): ")) 
+g = int(input("Enter another prime number (q): ")) 
+print("Public parameters:") 
+print("Prime modulus (p):", p) 
+print("Base (g):", g) 
+ 
+a = int(input("Enter private key for Alice (a): ")) 
+b = int(input("Enter private key for Bob (b): ")) 
+ 
+A = pow(g, a, p) 
+B = pow(g, b, p) 
+ 
+print("Alice's public key (A):", A) 
+print("Bob's public key (B):", B) 
+ 
+shared_secret_alice = pow(B, a, p) 
+shared_secret_bob = pow(A, b, p) 
+ 
+print("Shared secret computed by Alice:", shared_secret_alice) 
+print("Shared secret computed by Bob:", shared_secret_bob) 
+ 
+if shared_secret_alice == shared_secret_bob: 
+    print("Success! Both shared secrets match.") 
+else: 
+    print("Error! Shared secrets do not match.") 
