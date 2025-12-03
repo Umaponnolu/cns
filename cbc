@@ -1,0 +1,24 @@
+ 
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes 
+from cryptography.hazmat.backends import default_backend 
+import os 
+ 
+key = os.urandom(32) 
+iv = os.urandom(16) 
+ 
+print("Key:", key) 
+print("IV:", iv) 
+ 
+plaintext = b"HELLO WORLD AES CBC" 
+padded = plaintext.ljust(32, b'\0') 
+ 
+cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend()) 
+encryptor = cipher.encryptor() 
+ciphertext = encryptor.update(padded) + encryptor.finalize() 
+ 
+decryptor = cipher.decryptor() 
+decrypted = decryptor.update(ciphertext) + decryptor.finalize() 
+ 
+print("Plaintext:", plaintext) 
+print("Encrypted:", ciphertext) 
+print("Decrypted:", decrypted.strip(b'\0'))
