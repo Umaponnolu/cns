@@ -1,0 +1,20 @@
+ 
+from Crypto.Cipher import AES 
+ 
+key = b'abcdefghijklmnop' 
+cipher = AES.new(key, AES.MODE_ECB) 
+ 
+def pad(text): 
+    while len(text) % 16 != 0: 
+        text += ' ' 
+    return text 
+ 
+plaintext = "HELLO WORLD AES ECB" 
+padded_text = pad(plaintext) 
+ 
+encrypted = cipher.encrypt(padded_text.encode()) 
+decrypted = cipher.decrypt(encrypted).decode().strip() 
+ 
+print("Plaintext:", plaintext) 
+print("Encrypted:", encrypted) 
+print("Decrypted:", decrypted)
